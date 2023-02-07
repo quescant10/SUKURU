@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quintessa Test</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <style>
+    .quintessa-button  {
+    background-color: #FFFFFF;
+    border-color: rgb(30, 0, 255);
+    color: rgb(255, 255, 255);
+    height: 30px;
+    width: 100px;
+    border-radius: 20px;
+    font-weight: bolder;
+    font-size:14px;
+    transition: background-color 0.3s,
+        color 1s;
+    }
+    .quintessa-button:hover {
+    background-color:#979797;
+    color: rgb(47, 0, 255);
+    box-shadow:2px 2px 100px rgba(0, 0, 0, 0.15);
+    }
+    .quintessa-button:active {
+    background-color:#000591;
+    color: rgb(255, 255, 255);
+    border-color: rgb(3, 159, 0);
+    box-shadow:2px 2px 30px rgba(13, 0, 255, .5);
+    transition: background-color 0.1s,
+        color 0s;
+    }
+    .name:hover {
+      border-color: #000591;
+      background-color:#09FF00
+      transition: border-color 0.35s
+    }
+    .name:active {
+      border-color: #FF0000;
+      transition: border-color 0.5s
+    }
+    .data:hover {
+      border-color: #000591;
+      transition: border-color 0.35s
+    }
+    .data:active {
+      border-color: #00FF00;
+      transition: border-color 0.5s
+    }
+    .email:hover {
+      border-color: #000591;
+      transition: border-color 0.35s
+    }
+    .email:active {
+      border-color: #0000FF;
+      transition: border-color 0.5s
+    }
+  </style>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section id="about">
+        <h1>Test Website For Quintessa AI</h1>
+        <p>Hi I Am Quintessa A Virtual Assistant Created By Que </p>
+      <section id="services">
+        <h1>Functions</h1>
+        <ul>
+          <li>Text To Speech/ Speech To Text</li>
+          <li>Orientation</li>
+          <li>Wide Variety Of Implementation </li>
+        </ul>
+      </section>
+      <section id="contact">
+        <h1>Data Entry</h1>
+        <form action="#">
+          <input type="text" placeholder="Name" class="name">
+          <input type="text" placeholder="Name For Data" class="data">
+          <input type="email" placeholder="Email" class="email">
+          <textarea placeholder="Message"></textarea>
+          <button type="submit" class="quintessa-button">Analyze</button>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <p>Copyright ©2023 Quintessa / YOUnity {QUE}</p>
+    </footer>
+  </body>
+</html>
