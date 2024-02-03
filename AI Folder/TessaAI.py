@@ -19,6 +19,14 @@ import pywhatkit
 import itertools
 import logging
 
+
+cmd = "pipreqs ."
+os.system(cmd)
+
+def download():
+    cmd = "pip install -r requirements.txt"
+    os.system(cmd)
+
 # VARIABLES
 lb = "\n"
 quintessa = 0
@@ -301,7 +309,7 @@ def play_yukai():
 os.system(("clear"))
 sleep(0.005)
 
-
+download()
 for i in itertools.count():
     play_yukai()
     auto_log(instruction)
