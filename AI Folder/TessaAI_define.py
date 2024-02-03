@@ -9,7 +9,7 @@ from time import sleep
 import openai
 
 
-openai.api_key ='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'
+openai.api_key ='sk-########################################'
 my_voice = tts.init()
 voice = my_voice.getProperty('voices')
 listener = aa.Recognizer()
