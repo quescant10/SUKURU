@@ -194,30 +194,31 @@ def play_yukai():
             talk("Today is" + day)
 
         if "unity" in instruction:
-            if shiva:
+            if shiva ==1:
                 talk("no need")
-            logging.info('QUINTESSA EASY ACCESS ACTIVE')
-            print("UNITY PASSWORD")
-            talk("enter the password on the screen please ")
-            password = input('@')
-            if password == '369':
-                my_voice.setProperty('voice',voice[sv].id)
-                sleep(1)
-                os.system("clear")
-                print("                                                             {{ ADMIN ACCESS GRANTED }}")
-                talk("Access granted,")
-                sleep(.5)
-                os.system("clear")
-                shiva = 1
-                quintessa = 0
-            else:
-                os.system("clear")
-                my_voice.setProperty('voice',voice[sv].id)
-                print("          Access DENIED!")
-                talk("Access Denied, fuck up outta hea, mutha foka")
-                my_voice.setProperty('voice',voice[tv].id)
-                sleep(1)
-                os.system("clear")
+            if shiva ==0:            
+                logging.info('Unity password prompt')
+                print("UNITY PASSWORD")
+                talk("enter the password on the screen please ")
+                password = input('@')
+                if password == '369':
+                    my_voice.setProperty('voice',voice[sv].id)
+                    sleep(1)
+                    os.system("clear")
+                    print("                                                             {{ ADMIN ACCESS GRANTED }}")
+                    talk("Access granted,")
+                    sleep(.5)
+                    os.system("clear")
+                    shiva = 1
+                    quintessa = 0
+                else:
+                    os.system("clear")
+                    my_voice.setProperty('voice',voice[sv].id)
+                    print("          Access DENIED!")
+                    talk("Access Denied, fuck up outta hea, mutha foka")
+                    my_voice.setProperty('voice',voice[tv].id)
+                    sleep(1)
+                    os.system("clear")
 
 
 
@@ -308,9 +309,8 @@ def play_yukai():
 
 os.system(("clear"))
 sleep(0.005)
-###
-###FIRST TIME USERS MUST RUN DOWNLOAD 
-###download()
+
+#download()
 if __name__ == "__main__":
     for i in itertools.count():
         play_yukai()
