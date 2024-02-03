@@ -311,10 +311,10 @@ sleep(0.005)
 ###
 ###FIRST TIME USERS MUST RUN DOWNLOAD 
 ###download()
-
-for i in itertools.count():
-    play_yukai()
-    auto_log(instruction)
-    my_voice.runAndWait()
-    logging.info("Run Value: " + str(i))
-    sleep(0.0000)
+if __name__ == "__main__":
+    for i in itertools.count():
+        play_yukai()
+        auto_log(instruction)
+        my_voice.runAndWait()
+        logging.info("Run Value: " + str(i))
+        sleep(0.0000)
