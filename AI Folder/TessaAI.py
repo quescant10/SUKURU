@@ -1,15 +1,18 @@
 ###                                              ALL FUNCTIONALITIES GO HERE
-
-
-import speech_recognition as aa
-import pyttsx3 as tts
-import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options
 from colorama import Fore, Back, Style
 from time import sleep
 from bs4 import *
 from datetime import *
 from tessaAI_define import *
-import calendar
+
+import speech_recognition as aa
 import sys
 import os
 import pywhatkit
@@ -18,11 +21,15 @@ import logging
 
 # VARIABLES
 lb = "\n"
-LOLA = 1
 quintessa = 0
 save = 0
-txt = 1
-my_voice.setProperty('voice',voice[5].id)
+tv= 11
+shiva = 0
+my_voice.setProperty('voice',voice[tv].id)
+my_voice.setProperty('rate', 170)
+options= webdriver.ChromeOptions()
+
+
 
 ##### Greetings
 Help = Greetings.Help()
@@ -33,19 +40,37 @@ who_are_you = Greetings.who_are_you()
 about_u = Greetings.about_u()
 i_am = Greetings.i_am()
 listener = aa.Recognizer()
-##### Orientatio
-who_is_q = Orientation.who_is_q()
-who_is_your_creator = Orientation.who_is_your_creator()
-what_time_is_it = Orientation.what_time_is_it()
-todays_date = Orientation.todays_date()
-whats_today = Orientation.whats_today()
 ##### internal status
 status_blue = internal_status.status_blue()
 status_black = internal_status.status_black()
-logging.basicConfig(filename='LOLA_log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='Tessa_log', encoding='utf-8', level=logging.DEBUG)
 logging.info('Hi, INTERNAL STATUS. Operating System Starting')
 
 
+def weather(city):
+    print(city)
+    s = HTMLSession()
+    query = city
+    try:
+        url = f"https://www.google.com/search?q=weather+{query}"
+        r =s.get(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15'})
+        temp = r.html.find("span#wob_tm", first=True).text
+        unit = r.html.find("div.vk_bk.wob-unit span.wob_t", first=True).text
+        desc = r.html.find("div.VQF4g", first=True).find("span#wob_dc",first=True).text
+        print("CITY :",query)
+        print("TEMP :",temp, unit)
+        print("DISCRIPTION :",desc)
+        weather_index = ["in",query,
+        "it is",desc,
+        ",the temperature is,",temp,"degrees fahrenheit"
+        ]
+        weather_string =" ".join([str(item) for item in weather_index])
+        talk(weather_string)
+        sleep(4)
+    except:
+        talk("no search results for "+weather_string+" yet")
+        logging.debug("Weather Search Failed")
+        pass
 
 def Search(search):
     search = instruction.replace("open", " ")
@@ -62,52 +87,47 @@ def Search(search):
         pass
 
 
-start = 0
-session = 0
-username = None
-singularity = 0
-def start():
-    global start
-    global txt
-    global session
-    global instruction
-    instruction = input_instruction()
-    os.system(("clear"))
 
 
-    talk("How may i help you")
-    sleep(0.005)
-
-###### ABOUT ME
 def play_yukai():
-    global LOLA
     global quintessa
-    global session
     global instruction
-    global city
     global username
-    global singularity
+    global shiva
     instruction = input_instruction()
-    if quintessa == 1:
-        print(Fore.YELLOW+"                                                                   ♦🤖♦"," ~ [quintessa]")
-        my_voice.setProperty('voice',voice[5].id)
-    if singularity == 1:
-        my_voice.setProperty('voice',voice[19].id)
-        print(Fore.RED+"                                                                     ~ [unity]"," ♠  👩‍🚀  ♠",Style.RESET_ALL)
-#######                                                                  BASICS / DO SOMETHING/
-    if " " in instruction:
-        logging.warning("no audio captured")
-        sleep(0)
-    if "stellar mls" in instruction:
-        talk("opening stellar, mls")
-        realtor()
+    if shiva:
+        if " " in instruction:
+            print("SOurce : ChatGPT")
+            search = instruction.replace("shiva", " ")
+            messages = [
+            {"role": "system", "content": "You are an aware helpful assistant that keeps conversations brief."},
+        ]
+        while True:
+
+            message = instruction
+            if message:
+                messages.append(
+                    {"role": "user", "content": message},
+                )
+                chat = openai.chat.completions.create(
+                    model="gpt-3.5-turbo", messages=messages
+                )
+            
+            reply = chat.choices[0].message.content
+            talk(f"{reply}")
+
+            messages.append({"role": "assistant", "content": reply})
+            logging.warning("chatgpt")
+            sleep(0)
+            print(message)
+            break
+    else:
+        pass
+
+            
 
 
-################################################################################################################################
-################################################################################################################################
-
-#######                                                                  COMMANDS
-    elif "on youtube" in instruction:
+    if "on youtube" in instruction:
         try:
             song = instruction.replace("play on youtube", " ")
             talk("playing" + song)
@@ -116,72 +136,58 @@ def play_yukai():
         except:
             pass
 
-#######                                                                  BASICS / DO SOMETHING/
-
-#####                                                                                               TELL ME SOMETHING
-    elif "recorded" in instruction:
-        if quintessa == 1:
-            talk("yes you are,")
-        else:
-            talk("no")
-#################                                      TERMINAL
-    elif "status" in instruction:
+    if "status" in instruction:
         if quintessa == 1:
             talk(status_black)
         else:
             talk(status_blue)
-#####                                                                                               TELL ME SOMETHING
 
-#######                                                                               GREETINGS
-    elif "hello" in instruction:
+    if "hello" in instruction:
         talk(hello)
 
 
-    elif "about yourself" in instruction:
+    if "about yourself" in instruction:
             talk(about_u)
-    elif "who are you"  in instruction:
-        if quintessa == 1:
+    if "who are you"  in instruction:
+        if shiva == 1:
             talk("I am unity")
         else:
             talk(who_are_you)
-    elif "how are you" in instruction:
+    if "how are you" in instruction:
         talk(how_are_u)
-    elif "who are you" in instruction:
-        talk(i_am)
-    elif "what can you do" in instruction:
+    if "what can you do" in instruction:
         talk(demo)
-    elif "your name" in instruction:
-        if singularity == 1:
-            my_voice.setProperty('voice',voice[19].id)
-            talk("unity")
+    if "your name" in instruction:
+        if shiva == 1:
+            my_voice.setProperty('voice',voice[5].id)
+            talk("Shiva")
         else:
-            talk("quintessa")
-    elif "my name" in instruction:
+            talk("quintessa, what about you")
+
+    if "my name is" in instruction:
         username = instruction.replace("my name is"," ")
-        talk("hi" + username)
+        talk("hi"+username)
+    if "what's my name" in instruction:
+        if username:
+            print(username)
+            talk(username)
+        else:
+            talk("i don't know, tell me your name")
+    if "your creator" in instruction:
+        talk("Q,")
 
-
-
-    elif "is q" in instruction:
-        talk(who_is_q)
-    elif "your creator" in instruction:
-        talk(who_is_your_creator)
-#######                                                                               GREETINGS
-
-######                                                                                            ORIENTATION
-    elif "what time is it" in instruction:
+    if "what time is it" in instruction:
         time = datetime.now().strftime('%I:%M %p')
-        talk(what_time_is_it + time)
-    elif "what's today's date" in instruction:
+        talk("The current local time is"+ time)
+    if "today's date" in instruction:
         date = datetime.now().strftime('%d /%m /%Y')
-        talk(todays_date + date)
-    elif "what's today" in instruction:
+        talk("Today's date is"+ date)
         day = datetime.today().strftime('%A')
-        talk(whats_today + day)
-######                                                                      ORIENTATION
+        talk("Today is" + day)
 
-#####                                                                       TURN QUINTESSA ON
-    elif "it's me" in instruction:
+    if "unity" in instruction:
+        if shiva:
+            talk("no need")
         logging.info('QUINTESSA EASY ACCESS ACTIVE')
         print("UNITY PASSWORD")
         talk("enter the password on the screen please ")
@@ -193,43 +199,40 @@ def play_yukai():
             talk("Access granted,")
             sleep(.5)
             os.system("clear")
-            singularity = 1
+            shiva = 1
             quintessa = 0
         else:
             os.system("clear")
-            my_voice.setProperty('voice',voice[31].id)
+            my_voice.setProperty('voice',voice[5].id)
             print("          Access DENIED!")
             talk("Access Denied, fuck up outta hea, mutha foka")
-            my_voice.setProperty('voice',voice[9].id)
+            my_voice.setProperty('voice',voice[tv].id)
             sleep(1)
             os.system("clear")
 
 
-    if singularity == 1:
-        if "unity" in instruction:
+    if shiva == 1:
+        if "shiva" in instruction:
             quintessa = 1
-    if singularity == 0:
-        if "unity" in instruction:
-            my_voice.setProperty('voice',voice[19].id)
-            talk("breech detected, Stop ")
-            talk("You do not have access to this mode !")
-            my_voice.setProperty('voice',voice[9].id)
+    if shiva == 0:
+        if "shiva" in instruction:
+            my_voice.setProperty('voice',voice[5].id)
+            talk("breech detected, Stop, You, do not have access")
+            my_voice.setProperty('voice',voice[8].id)
+            talk("to this mode !")
+            my_voice.setProperty('voice',voice[tv].id)
 
-
-#####                                                                       TURN QUINTESSA ON
-
-#####                                                                       GO GHOST/ SWITCH MODES
 
 
     if "see you later" in instruction:
-        if quintessa == 1:
+        if shiva == 1:
             talk("OK")
             sleep(0)
-            my_voice.setProperty('voice',voice[5].id)
-            talk("hello again its me Yu kai")
+            my_voice.setProperty('voice',voice[tv].id)
+            talk("this is farewell,from quintessa")
             logging.info('QUINTESSA SHUTTING DOWN')
             sys.exit(0)
-        if quintessa == 0:
+        else:
             my_voice.setProperty('voice',voice[5].id)
             talk("OK, till we meet again")
             sleep(0)
@@ -241,79 +244,79 @@ def play_yukai():
         print("REBOOTING...")
         sleep(2)
         quintessa = 0
-        temp_access = 0
+        shiva = 0
         os.system("clear")
         sleep(3)
-        talk("rebooting process complete, ram erased, variables reset, how may i help you ")
+        talk("rebooting process complete, ram erased, how may i help you ")
         logging.error("Error Rebooting")
         logging.warning('Warning error detected rebooting')
-#####                                                                       GO GHOST/ SWITCH MODES
 
-#####                                                                       NEW MODES COMMING SOON
-    elif "help" in instruction:
+    if "help" in instruction:
         logging.info('HELP DETECTED')
         talk(Help)
-    elif "weather" in instruction:
-        instruction = instruction.replace("weather", " ")
-        city = instruction
-        if city:
-            talk("getting weather data from"+city)
-            print(city)
-            weather(city)
-        else:
-            print('No City Found')
-    if "my location" in instruction:
-        if city:
-            talk(city)
-        else:
+    if "where am i" in instruction:
+        try:
+            cmd = "CoreLocationCLI -f%%address"
+            os.system(cmd)
+            print(cmd)
+            talk(cmd)
+        except:
             talk("i am not sure, yet")
-    if "who is" in instruction:
-        logging.info("SEARCH SUCCESSFUL")
-        info = instruction.replace("who is", " ")
-        Search(info)
-    if "what is" in instruction:
-        if "your name" in instruction:
-            pass
-        logging.info("SEARCH SUCCESSFUL")
-        info = instruction.replace("what is ", " ")
-        Search(info)
-    if "how" in instruction:
-        logging.info("SEARCH SUCCESSFUL")
-        info = instruction.replace("how", " ")
-        Search(info)
+    if "weather" in instruction:
+        city = instruction.replace("weather ", "")
+        weather(city)
     if "search" in instruction:
         logging.info("find")
+        info=" "
         imfo = instruction.replace("search", " ")
         Search(info)
-        ############################################
+
     if "open" in instruction:
+        app = instruction.replace("open ", " ")
+        cmd = f"open{app}"
+        os.system(cmd)
+    
+    if "quit" in instruction:
+        cmd = instruction.replace("close", "")
+        # txt = cmd
+        # x = txt.capitalize()
+        # print (x)
+
+        # cmd = f"pkill{x}"
+        # print(cmd)
+        # os.system(cmd)
+        talk(f"cant close {cmd}, sorry ")
+
+    if "show me" in instruction:
         logging.info("open")
         Open = instruction.replace("open", " ")
         url = f"https://www.google.com/search?q={Open}"
-        driver = webdriver.Chrome()
+        driver = webdriver.Chrome(options=options)
         driver.get(url)
         driver.maximize_window()
+        options.add_experimental_option("detach", True)
 
-    else:
-        print(Fore.RED+"Unregistered Command","{",instruction,"}",Fore.GREEN)
+    if "close the window" in instruction:
+        cmd = "pkill Google Chrome"
+        os.system(cmd)
+        talk("sure")
 
-#####                                                                       NEW MODES COMMING SOON
+    
 
-for i in range(1):
-    start()
-with open("AI.TXT", "w") as ai:
-    ai.write("\n"+"NEW SESSION"+"\n")
+    
+    if"" in instruction:
+        print(Fore.RED+"Unregistered Command","\n","{",instruction,"}",Fore.GREEN)
+
+
+
+
+os.system(("clear"))
+sleep(0.005)
+
 
 for i in itertools.count():
     play_yukai()
+    auto_log(instruction)
+    my_voice.runAndWait()
     logging.info("Run Value: " + str(i))
-    print(Fore.GREEN+"                                                                                   LISTENING...")
-
-    with open("AI.TXT", "a+") as ai:
-        if instruction == instruction:
-            ai.write("\n"+"SAVED SENTENCE: #" + str(session)+"\n")
-            ai.write("Sentence {"+instruction+"}"+"\n")
-        else:
-            pass
-
-    sleep(0.00005)
+    sleep(0.0000)
