@@ -308,8 +308,10 @@ def play_yukai():
 
 os.system(("clear"))
 sleep(0.005)
+###
+###FIRST TIME USERS MUST RUN DOWNLOAD 
+###download()
 
-download()
 for i in itertools.count():
     play_yukai()
     auto_log(instruction)
