@@ -9,7 +9,7 @@ from time import sleep
 import openai
 
 
-openai.api_key =' sk-#####################################'
+openai.api_key ='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'
 my_voice = tts.init()
 voice = my_voice.getProperty('voices')
 listener = aa.Recognizer()
@@ -29,11 +29,37 @@ def auto_log(instruction):
             ai.write("\n"+"FAILED SENTENCE: #" + str(session)+"\n")
             ai.write("Sentence {"+instruction+"}"+"\n")
             pass
+def Shiva():
+    print("Source : ChatGPT")
+    messages = [
+    {"role": "system", "content": "You are an aware helpful assistant that keeps conversations brief."},
+]
+    while True:
 
+        message = instruction
+        if message:
+            messages.append(
+                {"role": "user", "content": message},
+            )
+            chat = openai.chat.completions.create(
+                model="gpt-3.5-turbo", messages=messages
+            )
+        reply = chat.choices[0].message.content
+        print(f"{reply}")
+        talk(f"{reply}")
+        messages.append({"role": "assistant", "content": reply})
+        logging.warning("chatgpt")
+        
+        sleep(0)
+
+        break
 
 def talk(text):
+
     my_voice.say(text)
     my_voice.runAndWait()
+
+    
 
 
     #driver.close()
@@ -112,4 +138,3 @@ class Greetings:
         ]
         Help_string =" ".join([str(item) for item in Help_index])
         return(Help_string)
-
