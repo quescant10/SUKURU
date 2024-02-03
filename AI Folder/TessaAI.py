@@ -24,7 +24,9 @@ lb = "\n"
 quintessa = 0
 save = 0
 tv= 11
+sv = 19
 shiva = 0
+ai = 0
 my_voice.setProperty('voice',voice[tv].id)
 my_voice.setProperty('rate', 170)
 options= webdriver.ChromeOptions()
@@ -94,216 +96,202 @@ def play_yukai():
     global instruction
     global username
     global shiva
+    global ai
     instruction = input_instruction()
-    if shiva:
-        if " " in instruction:
-            print("SOurce : ChatGPT")
-            search = instruction.replace("shiva", " ")
+    if "shiva" in instruction:
+        if shiva ==1:
+            ai = 1
+            print("Source : ChatGPT")
             messages = [
             {"role": "system", "content": "You are an aware helpful assistant that keeps conversations brief."},
         ]
-        while True:
+            while True:
 
-            message = instruction
-            if message:
-                messages.append(
-                    {"role": "user", "content": message},
-                )
-                chat = openai.chat.completions.create(
-                    model="gpt-3.5-turbo", messages=messages
-                )
-            
-            reply = chat.choices[0].message.content
-            talk(f"{reply}")
+                message = instruction
+                if message:
+                    messages.append(
+                        {"role": "user", "content": message},
+                    )
+                    chat = openai.chat.completions.create(
+                        model="gpt-3.5-turbo", messages=messages
+                    )
+                reply = chat.choices[0].message.content
+                print(f"{reply}")
+                talk(f"{reply}")
+                messages.append({"role": "assistant", "content": reply})
+                logging.warning("chatgpt")
+                ai = 0
+                sleep(0)
 
-            messages.append({"role": "assistant", "content": reply})
-            logging.warning("chatgpt")
-            sleep(0)
-            print(message)
-            break
-    else:
-        pass
-
-            
-
-
-    if "on youtube" in instruction:
-        try:
-            song = instruction.replace("play on youtube", " ")
-            talk("playing" + song)
-            pywhatkit.playonyt(song)
-            logging.info("YOUTUBE SEARCH SELECTED")
-        except:
-            pass
-
-    if "status" in instruction:
-        if quintessa == 1:
-            talk(status_black)
+                break
         else:
-            talk(status_blue)
+            talk("oh, no you dont")
+    if ai ==0:
 
-    if "hello" in instruction:
-        talk(hello)
+        if "on youtube" in instruction:
+            try:
+                song = instruction.replace("play on youtube", " ")
+                talk("playing" + song)
+                pywhatkit.playonyt(song)
+                logging.info("YOUTUBE SEARCH SELECTED")
+            except:
+                pass
+
+        if "status" in instruction:
+            if quintessa == 1:
+                talk(status_black)
+            else:
+                talk(status_blue)
+
+        if "hello" in instruction:
+            talk(hello)
+
+        if "about yourself" in instruction:
+                talk(about_u)
+        if "who are you"  in instruction:
+            if shiva == 1:
+                talk("I am unity")
+            else:
+                talk(who_are_you)
+        if "how are you" in instruction:
+            talk(how_are_u)
+        if "what can you do" in instruction:
+            talk(demo)
+        if "your name" in instruction:
+            if shiva == 1:
+                my_voice.setProperty('voice',voice[sv].id)
+                talk("Shiva")
+            else:
+                talk("quintessa, what about you")
+
+        if "my name is" in instruction:
+            username = instruction.replace("my name is"," ")
+            talk("hi"+username)
+        if "what's my name" in instruction:
+            if username:
+                print(username)
+                talk(username)
+            else:
+                talk("i don't know, tell me your name")
+        if "your creator" in instruction:
+            talk("Q,")
+
+        if "what time is it" in instruction:
+            time = datetime.now().strftime('%I:%M %p')
+            talk("The current local time is"+ time)
+        if "today's date" in instruction:
+            date = datetime.now().strftime('%d /%m /%Y')
+            talk("Today's date is"+ date)
+            day = datetime.today().strftime('%A')
+            talk("Today is" + day)
+
+        if "unity" in instruction:
+            if shiva:
+                talk("no need")
+            logging.info('QUINTESSA EASY ACCESS ACTIVE')
+            print("UNITY PASSWORD")
+            talk("enter the password on the screen please ")
+            password = input('@')
+            if password == '369':
+                my_voice.setProperty('voice',voice[sv].id)
+                sleep(1)
+                os.system("clear")
+                print("                                                             {{ ADMIN ACCESS GRANTED }}")
+                talk("Access granted,")
+                sleep(.5)
+                os.system("clear")
+                shiva = 1
+                quintessa = 0
+            else:
+                os.system("clear")
+                my_voice.setProperty('voice',voice[sv].id)
+                print("          Access DENIED!")
+                talk("Access Denied, fuck up outta hea, mutha foka")
+                my_voice.setProperty('voice',voice[tv].id)
+                sleep(1)
+                os.system("clear")
 
 
-    if "about yourself" in instruction:
-            talk(about_u)
-    if "who are you"  in instruction:
-        if shiva == 1:
-            talk("I am unity")
-        else:
-            talk(who_are_you)
-    if "how are you" in instruction:
-        talk(how_are_u)
-    if "what can you do" in instruction:
-        talk(demo)
-    if "your name" in instruction:
-        if shiva == 1:
-            my_voice.setProperty('voice',voice[5].id)
-            talk("Shiva")
-        else:
-            talk("quintessa, what about you")
 
-    if "my name is" in instruction:
-        username = instruction.replace("my name is"," ")
-        talk("hi"+username)
-    if "what's my name" in instruction:
-        if username:
-            print(username)
-            talk(username)
-        else:
-            talk("i don't know, tell me your name")
-    if "your creator" in instruction:
-        talk("Q,")
-
-    if "what time is it" in instruction:
-        time = datetime.now().strftime('%I:%M %p')
-        talk("The current local time is"+ time)
-    if "today's date" in instruction:
-        date = datetime.now().strftime('%d /%m /%Y')
-        talk("Today's date is"+ date)
-        day = datetime.today().strftime('%A')
-        talk("Today is" + day)
-
-    if "unity" in instruction:
-        if shiva:
-            talk("no need")
-        logging.info('QUINTESSA EASY ACCESS ACTIVE')
-        print("UNITY PASSWORD")
-        talk("enter the password on the screen please ")
-        password = input('@')
-        if password == '369':
-            sleep(1)
-            os.system("clear")
-            print("                                                             {{ ADMIN ACCESS GRANTED }}")
-            talk("Access granted,")
-            sleep(.5)
-            os.system("clear")
-            shiva = 1
+        if "see you later" in instruction:
+            if shiva == 1:
+                talk("OK")
+                sleep(0)
+                my_voice.setProperty('voice',voice[tv].id)
+                talk("this is farewell,from quintessa")
+                logging.info('QUINTESSA SHUTTING DOWN')
+                sys.exit(0)
+            else:
+                talk("OK, till we meet again")
+                sleep(0)
+                talk("Goodbye ")
+                logging.info('YU-KAI SHUTTING DOWN')
+                sys.exit(0)
+        if "reboot" in instruction:
+            talk("rebooting the operating system")
+            print("REBOOTING...")
+            sleep(2)
             quintessa = 0
-        else:
+            shiva = 0
+            my_voice.setProperty('voice',voice[tv].id)
             os.system("clear")
-            my_voice.setProperty('voice',voice[5].id)
-            print("          Access DENIED!")
-            talk("Access Denied, fuck up outta hea, mutha foka")
-            my_voice.setProperty('voice',voice[tv].id)
-            sleep(1)
-            os.system("clear")
+            sleep(3)
+            talk("rebooting process complete, ram erased, how may i help you ")
+            logging.error("Error Rebooting")
+            logging.warning('Warning error detected rebooting')
 
+        if "help" in instruction:
+            logging.info('HELP DETECTED')
+            talk(Help)
+        if "where am i" in instruction:
+            try:
+                cmd = "CoreLocationCLI -f%%address"
+                os.system(cmd)
+                print(cmd)
+                talk(cmd)
+            except:
+                talk("i am not sure, yet")
+        if "weather" in instruction:
+            city = instruction.replace("weather ", "")
+            weather(city)
+        if "search" in instruction:
+            logging.info("find")
+            info=" "
+            imfo = instruction.replace("search", " ")
+            Search(info)
 
-    if shiva == 1:
-        if "shiva" in instruction:
-            quintessa = 1
-    if shiva == 0:
-        if "shiva" in instruction:
-            my_voice.setProperty('voice',voice[5].id)
-            talk("breech detected, Stop, You, do not have access")
-            my_voice.setProperty('voice',voice[8].id)
-            talk("to this mode !")
-            my_voice.setProperty('voice',voice[tv].id)
-
-
-
-    if "see you later" in instruction:
-        if shiva == 1:
-            talk("OK")
-            sleep(0)
-            my_voice.setProperty('voice',voice[tv].id)
-            talk("this is farewell,from quintessa")
-            logging.info('QUINTESSA SHUTTING DOWN')
-            sys.exit(0)
-        else:
-            my_voice.setProperty('voice',voice[5].id)
-            talk("OK, till we meet again")
-            sleep(0)
-            talk("Goodbye ")
-            logging.info('YU-KAI SHUTTING DOWN')
-            sys.exit(0)
-    if "reboot" in instruction:
-        talk("rebooting the operating system")
-        print("REBOOTING...")
-        sleep(2)
-        quintessa = 0
-        shiva = 0
-        os.system("clear")
-        sleep(3)
-        talk("rebooting process complete, ram erased, how may i help you ")
-        logging.error("Error Rebooting")
-        logging.warning('Warning error detected rebooting')
-
-    if "help" in instruction:
-        logging.info('HELP DETECTED')
-        talk(Help)
-    if "where am i" in instruction:
-        try:
-            cmd = "CoreLocationCLI -f%%address"
+        if "open" in instruction:
+            app = instruction.replace("open ", " ")
+            cmd = f"open{app}"
             os.system(cmd)
-            print(cmd)
-            talk(cmd)
-        except:
-            talk("i am not sure, yet")
-    if "weather" in instruction:
-        city = instruction.replace("weather ", "")
-        weather(city)
-    if "search" in instruction:
-        logging.info("find")
-        info=" "
-        imfo = instruction.replace("search", " ")
-        Search(info)
+        
+        if "quit" in instruction:
+            cmd = instruction.replace("close", "")
+            # txt = cmd
+            # x = txt.capitalize()
+            # print (x)
 
-    if "open" in instruction:
-        app = instruction.replace("open ", " ")
-        cmd = f"open{app}"
-        os.system(cmd)
-    
-    if "quit" in instruction:
-        cmd = instruction.replace("close", "")
-        # txt = cmd
-        # x = txt.capitalize()
-        # print (x)
+            # cmd = f"pkill{x}"
+            # print(cmd)
+            # os.system(cmd)
+            talk(f"cant close {cmd}, sorry ")
 
-        # cmd = f"pkill{x}"
-        # print(cmd)
-        # os.system(cmd)
-        talk(f"cant close {cmd}, sorry ")
+        if "show me" in instruction:
+            logging.info("open")
+            Open = instruction.replace("open", " ")
+            url = f"https://www.google.com/search?q={Open}"
+            driver = webdriver.Chrome(options=options)
+            driver.get(url)
+            driver.maximize_window()
+            options.add_experimental_option("detach", True)
 
-    if "show me" in instruction:
-        logging.info("open")
-        Open = instruction.replace("open", " ")
-        url = f"https://www.google.com/search?q={Open}"
-        driver = webdriver.Chrome(options=options)
-        driver.get(url)
-        driver.maximize_window()
-        options.add_experimental_option("detach", True)
-
-    if "close the window" in instruction:
-        cmd = "pkill Google Chrome"
-        os.system(cmd)
-        talk("sure")
+        if "close the window" in instruction:
+            cmd = "pkill Google Chrome"
+            os.system(cmd)
+            talk("sure")
 
     
 
-    
     if"" in instruction:
         print(Fore.RED+"Unregistered Command","\n","{",instruction,"}",Fore.GREEN)
 
