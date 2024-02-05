@@ -9,11 +9,10 @@ from time import sleep
 import openai
 
 
-openai.api_key ='sk-########################################'
+openai.api_key ='sk---------------------------------------'
 my_voice = tts.init()
 voice = my_voice.getProperty('voices')
 listener = aa.Recognizer()
-my_voice.setProperty('voice',voice[11].id)
 lb = "\n"
 start = 0
 session = 0
@@ -129,7 +128,9 @@ class Greetings:
         return f"i am an, artificial intelligence,"
     def demo():
         demo_index = [" some things you can ask me are,",
-        "open,", "to open anything on the web, or say,","play on youtube, to play a video or song",",you can also say,","show me,or, what's the weather like in your city, i also have a deep mind, ask q for authorization"
+        "open,", "to open anything on the web, or say,","play on youtube, to play a video or song",
+        ",you can also say,","show me,or, what's the weather like in your city,",
+         " i also have a deep mind, ask q for authorization"
         ]
         demo_string =" ".join([str(item) for item in demo_index])
         return(demo_string)
