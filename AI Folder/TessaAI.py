@@ -31,7 +31,7 @@ def download():
 lb = "\n"
 quintessa = 0
 save = 0
-tv= 11
+tv= 14
 sv = 19
 shiva = 0
 ai = 0
@@ -170,7 +170,7 @@ def play_yukai():
                 my_voice.setProperty('voice',voice[sv].id)
                 talk("Shiva")
             else:
-                talk("quintessa, what about you")
+                talk("Q, what about you")
 
         if "my name is" in instruction:
             username = instruction.replace("my name is"," ")
@@ -261,7 +261,7 @@ def play_yukai():
             except:
                 talk("i am not sure, yet")
         if "weather" in instruction:
-            city = instruction.replace("weather ", "")
+            city = instruction.replace("weather", " ")
             weather(city)
         if "search" in instruction:
             logging.info("find")
@@ -270,9 +270,13 @@ def play_yukai():
             Search(info)
 
         if "open" in instruction:
-            app = instruction.replace("open ", " ")
-            cmd = f"open{app}"
+
+            app = instruction.replace("open","")
+            cmd = "touch" + app[:1] + app[1].swapcase() + app[2:]  
+            print(cmd)
             os.system(cmd)
+
+
         
         if "quit" in instruction:
             cmd = instruction.replace("close", "")
@@ -287,7 +291,7 @@ def play_yukai():
 
         if "show me" in instruction:
             logging.info("open")
-            Open = instruction.replace("open", " ")
+            Open = instruction.replace("show me", " ")
             url = f"https://www.google.com/search?q={Open}"
             driver = webdriver.Chrome(options=options)
             driver.get(url)
@@ -301,7 +305,7 @@ def play_yukai():
 
     
 
-    if"" in instruction:
+    else:
         print(Fore.RED+"Unregistered Command","\n","{",instruction,"}",Fore.GREEN)
 
 
